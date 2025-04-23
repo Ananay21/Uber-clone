@@ -2,7 +2,7 @@ import { SplashScreen, Stack } from "expo-router";
 import {useFonts} from "expo-font";
 import "./globals.css"
 import { useEffect } from "react";
-import { ClerkProvider } from '@clerk/clerk-expo'
+import { ClerkLoaded, ClerkProvider } from '@clerk/clerk-expo'
 import {tokenCache} from "@clerk/clerk-expo/token-cache"
 
 export default function RootLayout() {
@@ -18,11 +18,16 @@ export default function RootLayout() {
     if (Loaded) SplashScreen.hideAsync();
   },[Loaded])
 
-  return <ClerkProvider tokenCache={tokenCache}> 
-            <Stack>
-              <Stack.Screen name="index" options={{headerShown:false}}/>
-              <Stack.Screen name="(root)" options={{headerShown:false}}/>
-              <Stack.Screen name="(auth)" options={{headerShown:false}}/>
-            </Stack>
-        </ClerkProvider>;
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+  return <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+  <ClerkLoaded>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(root)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  </ClerkLoaded>
+</ClerkProvider>
 }

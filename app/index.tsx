@@ -2,10 +2,10 @@ import { Redirect } from 'expo-router'
 import { useAuth } from "@clerk/clerk-expo";
 
 const Home = () => {
-  const {isSignedIn}=useAuth()
-  
+  const {isSignedIn}=useAuth();
+
   if(isSignedIn){
-    <Redirect href='/(root)/(tabs)/home'/>
+    return<Redirect href='/(root)/(tabs)/home'/>
   }
 
   return (
